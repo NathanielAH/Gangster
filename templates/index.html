@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastermind Game</title>
+    <!-- Link to stylesheet (will be created in a later step) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Mastermind Codebreaker</h1>
+
+    <!-- Area for game messages (e.g., instructions, win/loss messages, errors) -->
+    <div id="game-messages">
+        {% if message %}
+            <p class="message">{{ message }}</p>
+        {% endif %}
+        {% if error_message %}
+            <p class="error">{{ error_message }}</p>
+        {% endif %}
+    </div>
+
+    <!-- Game form for submitting guesses -->
+    <form method="POST" action="/">
+        <label for="guess_input">Enter your guess (e.g., 1234):</label>
+        <input type="text" id="guess_input" name="guess" required>
+        <button type="submit">Submit Guess</button>
+    </form>
+
+    <!-- Display remaining attempts -->
+    {% if attempts_remaining is defined %}
+        <p>Attempts remaining: {{ attempts_remaining }}</p>
+    {% endif %}
+
+    <!-- Area to display previous guesses and their results -->
+    <div id="previous-guesses">
+        <h2>Previous Guesses:</h2>
+        {% if history %}
+            <ul>
+                {% for item in history %}
+                    <li>
+                        Guess: {{ item.guess }} - 
+                        Result: {{ item.correct_position }} correct position, 
+                                {{ item.correct_item_wrong_position }} correct item (wrong position)
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No guesses made yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- Link to start a new game -->
+    {% if game_over %}
+        <a href="/">Start New Game</a>
+    {% endif %}
+
+</body>
+</html>
